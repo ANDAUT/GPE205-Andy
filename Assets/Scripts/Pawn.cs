@@ -14,11 +14,27 @@ public abstract class Pawn : MonoBehaviour
     //Declaring the mover
     public MoveScript movement;
 
+    //Declaring the shooter
+    public Shooter shooter;
+
+    //Declaring the shell prefab
+    public GameObject Shell;
+    //float for the force of the shell
+    public float bulletForce;
+    //float for damage the shell does
+    public float damageDone;
+    //float for lifetime for shell
+    public float duration;
+    //float for firerate
+    public float fireRate;
+
+
     // Start = Called before first frame update
-   public virtual void Start()
+    public virtual void Start()
     {
         //Debug.Log("Pawn in action");
         movement = GetComponent<MoveScript>();
+        shooter = GetComponent<Shooter>();
     }
 
     // This is called every frame (Dangerous)
@@ -30,5 +46,7 @@ public abstract class Pawn : MonoBehaviour
     public abstract void MoveBackward();
     public abstract void TurnRight();
     public abstract void TurnLeft();
+    public abstract void RotateTowards(Vector3 targetPosition);
+    public abstract void fireShell();
 
 }

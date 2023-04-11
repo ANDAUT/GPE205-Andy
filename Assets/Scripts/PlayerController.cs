@@ -12,6 +12,7 @@ public class PlayerController : Controller
     public KeyCode moveBackwardKey;
     public KeyCode turnRightKey;
     public KeyCode turnLeftKey;
+    public KeyCode shootKey;
 
     // Start is called before the first frame update
     public override void Start()
@@ -76,6 +77,10 @@ public class PlayerController : Controller
         if (Input.GetKey(turnLeftKey))
         {
             pawn.TurnLeft();
+        }
+        if (Input.GetKeyDown(shootKey))
+        {
+            pawn.fireShell();
         }
     }
 }

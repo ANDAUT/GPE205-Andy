@@ -23,6 +23,6 @@ public class TankMovement : MoveScript
 
     public override void Turn(float turnSpeed)
     {
-        rBody.transform.Rotate(0, turnSpeed, 0);
+        rBody.transform.Rotate(0, turnSpeed * Time.deltaTime, 0);
     }
 }

@@ -49,3 +49,4 @@ MonoBehaviour:
   moveBackwardKey: 115
   turnRightKey: 97
   turnLeftKey: 100
+  shootKey: 101

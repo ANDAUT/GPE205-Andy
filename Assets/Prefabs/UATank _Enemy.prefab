@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 8020698663042054560}
   - component: {fileID: 3866029392021501326}
   m_Layer: 0
-  m_Name: UATank
+  m_Name: UATank _Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7173767058054170991}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.02679081, y: 0.97115666, z: -0.19646762, w: -0.13242933}
   m_LocalPosition: {x: 0.33480453, y: 0.02753052, z: -7.67}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
