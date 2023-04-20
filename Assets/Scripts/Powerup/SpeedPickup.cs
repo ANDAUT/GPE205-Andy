@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthPickup : MonoBehaviour
+public class SpeedPickup : MonoBehaviour
 {
-    public HealthPowerup healUp;
+
+    public SpeedPowerup speedUp;
 
     public void OnTriggerEnter(Collider other)
     {
@@ -12,10 +13,10 @@ public class HealthPickup : MonoBehaviour
         PowerupManager powerupManager = other.GetComponent<PowerupManager>();
 
         //If the colliding object DOES have a powerupcontroller...
-        if(powerupManager != null)
+        if (powerupManager != null)
         {
             //This adds the powerup
-            powerupManager.Add(healUp);
+            powerupManager.Add(speedUp);
 
             //and this destroys this pickup
             Destroy(gameObject);
@@ -26,10 +27,12 @@ public class HealthPickup : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        
     }
 }

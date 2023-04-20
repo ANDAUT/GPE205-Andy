@@ -265,6 +265,9 @@ public class AIController : Controller
             {
                 //Targets the gameobject of the pawn of the first player controller in the list
                 target = GameManager.instance.players[0].pawn.gameObject;
+            } else
+            {
+                //Debug.Log("No target");
             }
         }
     }

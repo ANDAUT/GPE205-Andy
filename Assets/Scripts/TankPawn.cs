@@ -101,4 +101,10 @@ public class TankPawn : Pawn
             fireCooldown = Time.time + fireRate;
         }
     }
+
+    public void changeSpeed(float amount)
+    {
+        moveSpeed = moveSpeed + amount;
+        Debug.Log("Speed changed! New Speed: " + moveSpeed);
+    }
 }

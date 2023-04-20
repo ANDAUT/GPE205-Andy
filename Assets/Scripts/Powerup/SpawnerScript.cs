@@ -13,26 +13,29 @@ public class SpawnerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        spawnedPickup = null;
         nextSpawnTime = Time.time + spawnDelay;
+        tf = gameObject.transform;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //If there's nothing there, something will spawn
-        if (spawnedPickup == null)
+        // If it is time to spawn a pickup
+        if(spawnedPickup == null)
         {
-            //...and if it's time to spawn
             if (Time.time > nextSpawnTime)
             {
                 //Spawn it and set the next time
-                spawnedPickup = Instantiate(pickupPrefab, transform.position, Quaternion.identity) as GameObject;
-                nextSpawnTime = Time.time + spawnDelay;
-            } else
-            {
-                //Otherwise, postpone the spawn
+                spawnedPickup = Instantiate<GameObject>(pickupPrefab, tf.position, Quaternion.identity) as GameObject;
                 nextSpawnTime = Time.time + spawnDelay;
             }
         }
+        else
+        {
+            //Otherwise, postpone the spawn
+            nextSpawnTime = Time.time + spawnDelay;
+        }
+        
     }
 }
