@@ -7,6 +7,12 @@ public abstract class Controller : MonoBehaviour
     //This holds our pawn
     public Pawn pawn;
 
+    //This holds score
+    public float score;
+
+    //This holds lives
+    public float lives;
+
     // Start is called before the first frame update
     public virtual void Start()
     {
@@ -21,4 +27,9 @@ public abstract class Controller : MonoBehaviour
 
     //Abstract means that any child must override it
     public abstract void DetectInput();
+
+    public void AddToScore(float scoreToAdd)
+    {
+        score = score + scoreToAdd;
+    }
 }

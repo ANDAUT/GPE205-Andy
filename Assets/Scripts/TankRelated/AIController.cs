@@ -6,7 +6,7 @@ public class AIController : Controller
 {
 
     //An enum organizing what states the AI can be in
-    public enum AIState { Guard, Scan, Chase, Attack, Patrol, ReturnHome, ChooseTarget};
+    public enum AIState { Guard, Scan, Chase, Attack, Patrol, ReturnHome, ChooseTarget, Dead};
 
     //The current state
     public AIState currentState;
@@ -39,10 +39,6 @@ public class AIController : Controller
     public float fieldOfView;
 
 
-
-
-
-
     // Start is called before the first frame update
     public override void Start()
     {
@@ -56,6 +52,14 @@ public class AIController : Controller
         base.Update();
         //DoSeekState();
         MakeDecisions();
+
+        if(pawn == null)
+        {
+            ChangeState(AIState.Dead);
+        }
+
+        
+
     }
 
     public override void DetectInput()
@@ -64,54 +68,70 @@ public class AIController : Controller
 
     public void MakeDecisions()
     {
-        TargetPlayerOne();
-
-        //Debug.Log("Thinking...");
-        switch (currentState)
+        if(target != null)
         {
-            case AIState.Guard:
-                DoIdleState();
-                currentWaypoint = 0;
+            if (pawn != null)
+            {
 
-                if (IsDistanceLessThan(target, 15))
+                TargetPlayerOne();
+
+                //Debug.Log("Thinking...");
+                switch (currentState)
                 {
-                    ChangeState(AIState.Chase);
+                    case AIState.Guard:
+                        DoIdleState();
+                        currentWaypoint = 0;
+
+                        if (IsDistanceLessThan(target, 15) && target != null)
+                        {
+                            ChangeState(AIState.Chase);
+                        }
+                        else if (target == null)
+                        {
+                            DoIdleState();
+                        }
+                        break;
+                    case AIState.Patrol:
+                        //Does work
+                        Patrol();
+                        //Transition check
+                        if (IsDistanceLessThan(target, 15))
+                        {
+                            ChangeState(AIState.Chase);
+                        }
+                        break;
+
+                    case AIState.Chase:
+                        //Does work
+                        DoChaseState();
+                        //Transition check
+                        if (IsDistanceLessThan(target, 12))
+                        {
+                            ChangeState(AIState.Attack);
+                        }
+                        else if (!IsDistanceLessThan(target, 15))
+                        {
+                            ChangeState(AIState.Patrol);
+                        }
+                        break;
+
+                    case AIState.Attack:
+
+                        DoAttackState();
+
+                        if (!IsDistanceLessThan(target, 12) && pawn != null)
+                        {
+                            ChangeState(AIState.Chase);
+                        }
+                        break;
+                    case AIState.Dead:
+
+                        break;
+
                 }
-                break;
-            case AIState.Patrol:
-                //Does work
-                Patrol();
-                //Transition check
-                if (IsDistanceLessThan(target, 15))
-                {
-                    ChangeState(AIState.Chase);
-                }
-                break;
-
-            case AIState.Chase:
-                //Does work
-                DoChaseState();
-                //Transition check
-                if (IsDistanceLessThan(target, 12))
-                {
-                    ChangeState(AIState.Attack);
-                } else if (!IsDistanceLessThan(target, 15))
-                {
-                    ChangeState(AIState.Patrol);
-                }
-                break;
-
-            case AIState.Attack:
-
-                DoAttackState();
-
-                if(!IsDistanceLessThan(target, 12))
-                {
-                    ChangeState(AIState.Chase);
-                }
-                break;
-
+            }
         }
+        
     }
 
     public virtual void ChangeState(AIState newState)
@@ -172,10 +192,17 @@ public class AIController : Controller
 
     protected virtual void DoAttackState()
     {
-        //Chase
-        Seek(target);
-        //Fire
-        Shoot();
+        if(pawn != null)
+        {
+            //Chase
+            Seek(target);
+            //Fire
+            Shoot();
+        } else if(pawn == null)
+        {
+            ChangeState(AIState.Dead);
+        }
+        
     }
 
     protected void Flee()
@@ -217,6 +244,7 @@ public class AIController : Controller
         {
             return false;
         }
+        
     }
 
     protected void PatrolState()
@@ -258,14 +286,15 @@ public class AIController : Controller
     public void TargetPlayerOne()
     {
         //This checks if the gamemanager exists
-        if(GameManager.instance.players != null)
+        if (GameManager.instance.players != null)
         {
             //Checks if there's players in said manager
             if(GameManager.instance.players.Count > 0)
             {
                 //Targets the gameobject of the pawn of the first player controller in the list
                 target = GameManager.instance.players[0].pawn.gameObject;
-            } else
+            }
+            else
             {
                 //Debug.Log("No target");
             }

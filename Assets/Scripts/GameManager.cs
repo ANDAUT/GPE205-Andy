@@ -8,8 +8,24 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public Transform playerSpawnTransform;
 
+    public enum CurrentGameState { TitleScreen, MainMenu, Options, Credits, Gameplay, GameOver };
+    public CurrentGameState CurrentState;
+
+    // Game States
+    public GameObject TitleScreenStateObject;
+    public GameObject MainMenuStateObject;
+    public GameObject OptionsScreenStateObject;
+    public GameObject CreditsScreenStateObject;
+    public GameObject GameplayStateObject;
+    public GameObject GameOverScreenStateObject;
+
+
     private void Start()
     {
+
+        ActivateTitleScreen();
+
+
         //Temporary until new knowledge acquired
         SpawnPlayer();
     }
@@ -36,22 +52,110 @@ public class GameManager : MonoBehaviour
     public List<PlayerController> players;
 
     //Prefabs
-    public GameObject Player0;
-    public GameObject UATank;
+    public GameObject PlayerController;
+    public GameObject PlayerTank;
 
     public void SpawnPlayer()
     {
-        //Spawns the player Controller with values: (0, 0, 0)
-        GameObject newPlayerObj = Instantiate(Player0, Vector3.zero, Quaternion.identity) as GameObject;
+        if(playerSpawnTransform != null)
+        {
+            //Spawns the player Controller with values: (0, 0, 0)
+            GameObject newPlayerObj = Instantiate(PlayerController, Vector3.zero, Quaternion.identity) as GameObject;
 
-        // Spawns the pawn and connects it to its respective controller
-        GameObject newPawnObj = Instantiate(UATank, playerSpawnTransform.position, playerSpawnTransform.rotation) as GameObject;
+            // Spawns the pawn and connects it to its respective controller
+            GameObject newPawnObj = Instantiate(PlayerTank, playerSpawnTransform.position, playerSpawnTransform.rotation) as GameObject;
 
-        // Gets both the player controller and pawn components
-        Controller newController = newPlayerObj.GetComponent<Controller>();
-        Pawn newPawn = newPawnObj.GetComponent<Pawn>();
+            // Gets both the player controller and pawn components
+            Controller newController = newPlayerObj.GetComponent<Controller>();
+            Pawn newPawn = newPawnObj.GetComponent<Pawn>();
 
-        newController.pawn = newPawn;
+            newController.pawn = newPawn;
+            newController.score = 0;
+            newPawn.controller = newController;
+        }
+        
     }
-    
+
+    private void DeactivateAllStates()
+    {
+        //Deactivates every game state that exists
+        TitleScreenStateObject.SetActive(false);
+        MainMenuStateObject.SetActive(false);
+        OptionsScreenStateObject.SetActive(false);
+        CreditsScreenStateObject.SetActive(false);
+        GameplayStateObject.SetActive(false);
+        GameOverScreenStateObject.SetActive(false);
+    }
+
+    public void ActivateTitleScreen()
+    {
+        //Deactivates all states
+        DeactivateAllStates();
+
+        //and then proceed to activate the title screen
+        TitleScreenStateObject.SetActive(true);
+        CurrentState = CurrentGameState.TitleScreen;
+
+        //Anything special for a title screen may be added here too
+    }
+
+    public void ActivateMainMenuScreen()
+    {
+        //Deactivates all states
+        DeactivateAllStates();
+
+        //and then proceed to activate the main menu screen
+        MainMenuStateObject.SetActive(true);
+        CurrentState = CurrentGameState.MainMenu;
+
+        //Anything special for a title screen may be added here too
+    }
+
+    public void ActivateOptionsScreen()
+    {
+        //Deactivates all states
+        DeactivateAllStates();
+
+        //and then proceed to activate the options screen
+        OptionsScreenStateObject.SetActive(true);
+        CurrentState = CurrentGameState.Options;
+
+        //Anything special for a title screen may be added here too
+    }
+
+    public void ActivateCreditsScreen()
+    {
+        //Deactivates all states
+        DeactivateAllStates();
+
+        //and then proceed to activate the credits screen
+        CreditsScreenStateObject.SetActive(true);
+        CurrentState = CurrentGameState.Credits;
+
+        //Anything special for a title screen may be added here too
+    }
+
+    public void ActivateGameScreen()
+    {
+        //Deactivates all states
+        DeactivateAllStates();
+
+        //and then proceed to activate the gameplay screen
+        GameplayStateObject.SetActive(true);
+        CurrentState = CurrentGameState.Gameplay;
+
+        //Anything special for a title screen may be added here too
+    }
+
+    public void ActivateGameOverScreen()
+    {
+        //Deactivates all states
+        DeactivateAllStates();
+
+        //and then proceed to activate the game over screen
+        GameOverScreenStateObject.SetActive(true);
+        CurrentState = CurrentGameState.GameOver;
+
+        //Anything special for a title screen may be added here too
+    }
 }

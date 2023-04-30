@@ -7,6 +7,7 @@ public class Health : MonoBehaviour
 
     public float currentHealth;
     public float maxHealth;
+    public float bounty;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +42,7 @@ public class Health : MonoBehaviour
     public void Die(Pawn attacker)
     {
         Destroy(gameObject);
+        attacker.controller.AddToScore(bounty);
     }
 
     public void Heal(float amount, Pawn healer)

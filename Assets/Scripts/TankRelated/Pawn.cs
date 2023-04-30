@@ -5,6 +5,9 @@ using UnityEngine;
 public abstract class Pawn : MonoBehaviour
 {
 
+    //This holds our controller
+    public Controller controller;
+
     //This determines the tank's speed (forward and back)
     public float moveSpeed;
 

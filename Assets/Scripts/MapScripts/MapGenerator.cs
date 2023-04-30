@@ -12,12 +12,40 @@ public class MapGenerator : MonoBehaviour
     public float roomHeight = 20.0f;
     private Room[,] grid;
 
-    public int mapSeed;
-    public bool isMapOfTheDay;
-    public bool isRandom;
+    //The string is what you input, the int is what comes out (might set it to private)
+    public string MapSeed;
+    public int currentSeed;
 
+    //Generator type is an enum that holds all of the possible seed types, be it set, random, or 'map of the day'
+    public enum GeneratorType {RandomSeed, SetSeed, MapOfTheDay};
+    public GeneratorType mapType;
+
+
+    //Temporary code for spawning our map via key
     public KeyCode spawnMapKey;
     private bool alreadySpawned;
+
+    private void Awake()
+    {
+
+        //oh god this is deprecated
+        if (mapType == GeneratorType.MapOfTheDay)
+        {
+            currentSeed = DateToInt(DateTime.Now.Date);
+            UnityEngine.Random.InitState(currentSeed);
+
+        } else if (mapType == GeneratorType.SetSeed)
+        {
+            currentSeed = MapSeed.GetHashCode();
+            UnityEngine.Random.InitState(currentSeed);
+
+        } else if (mapType == GeneratorType.RandomSeed)
+        {
+            currentSeed = UnityEngine.Random.Range(0, 10000000);
+            UnityEngine.Random.InitState(currentSeed);
+        }
+        
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -55,17 +83,6 @@ public class MapGenerator : MonoBehaviour
 
     public void GenerateMap()
     {
-        //oh god this is deprecated
-        UnityEngine.Random.seed = DateToInt(DateTime.Now);
-        if (isMapOfTheDay)
-        {
-            mapSeed = DateToInt(DateTime.Now.Date);
-        }
-
-        if (isRandom)
-        {
-            mapSeed = DateToInt(DateTime.Now);
-        }
 
         //This clears out the grid - column being x, and row being y
         grid = new Room[cols, rows];
