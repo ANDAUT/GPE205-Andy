@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
     public Transform playerSpawnTransform;
+    public MapGenerator mapGen;
 
     public enum CurrentGameState { TitleScreen, MainMenu, Options, Credits, Gameplay, GameOver };
     public CurrentGameState CurrentState;
@@ -22,12 +23,13 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-
-        ActivateTitleScreen();
-
+        if(TitleScreenStateObject != null)
+        {
+            ActivateTitleScreen();
+        }
 
         //Temporary until new knowledge acquired
-        SpawnPlayer();
+        //SpawnPlayer();
     }
 
     // Awake means the code will run even before any other codes begin firing their Start() functions
@@ -144,7 +146,11 @@ public class GameManager : MonoBehaviour
         GameplayStateObject.SetActive(true);
         CurrentState = CurrentGameState.Gameplay;
 
+
         //Anything special for a title screen may be added here too
+
+        SpawnPlayer();
+        mapGen.GenerateMap();
     }
 
     public void ActivateGameOverScreen()

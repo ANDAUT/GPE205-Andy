@@ -111,6 +111,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedUp:
-    duration: 3
+    duration: 10
     isPermanent: 0
     speedToAdd: 3

@@ -9,7 +9,7 @@ public class MapGenerator : MonoBehaviour
     public int rows;
     public int cols;
     public float roomWidth = 50.0f;
-    public float roomHeight = 20.0f;
+    public float roomHeight = 50.0f;
     private Room[,] grid;
 
     //The string is what you input, the int is what comes out (might set it to private)
@@ -57,6 +57,15 @@ public class MapGenerator : MonoBehaviour
     void Update()
     {
         TheSpawnKey();
+    }
+
+    public void spawnTheMap()
+    {
+        if(alreadySpawned == false)
+        {
+            GenerateMap();
+            alreadySpawned = true;
+        }
     }
 
     public void TheSpawnKey()

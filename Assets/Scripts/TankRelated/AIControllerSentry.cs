@@ -58,8 +58,7 @@ public class AIControllerSentry : Controller
     public void MakeDecisions()
     {
         
-        if(target != null)
-        {
+        
             if (pawn != null)
             {
 
@@ -95,7 +94,6 @@ public class AIControllerSentry : Controller
 
                 }
             }
-        }
         
         
     }

@@ -68,10 +68,9 @@ public class AIController : Controller
 
     public void MakeDecisions()
     {
-        if(target != null)
+        if(pawn != null)
         {
-            if (pawn != null)
-            {
+            
 
                 TargetPlayerOne();
 
@@ -129,7 +128,6 @@ public class AIController : Controller
                         break;
 
                 }
-            }
         }
         
     }
