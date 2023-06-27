@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
         }
 
         //Temporary until new knowledge acquired
-        //SpawnPlayer();
+        SpawnPlayer();
     }
 
     // Awake means the code will run even before any other codes begin firing their Start() functions
@@ -52,6 +52,8 @@ public class GameManager : MonoBehaviour
 
     //Player List / Count
     public List<PlayerController> players;
+    //AI List / Count
+    public List<PlayerController> cpus;
 
     //Prefabs
     public GameObject PlayerController;

@@ -28,8 +28,13 @@ public class Health : MonoBehaviour
         //The 'amount' float dictates how much damage went through, whereas the 'attacker' Pawn is the source of the damage
 
         currentHealth = currentHealth - amount;
-        Debug.Log("Attacker: " + attacker.name + " Damage: " + amount + " Target: " + gameObject.name);
-        //This resembles Java's println function lol
+        
+        if(attacker != null)
+        {
+            Debug.Log("Attacker: " + attacker.name + " Damage: " + amount + " Target: " + gameObject.name);
+            //This resembles Java's println function lol
+        }
+
 
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 

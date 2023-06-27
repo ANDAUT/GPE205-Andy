@@ -6,7 +6,7 @@ public class AIController : Controller
 {
 
     //An enum organizing what states the AI can be in
-    public enum AIState { Guard, Scan, Chase, Attack, Patrol, ReturnHome, ChooseTarget, Dead};
+    public enum AIState { Guard, Scan, Chase, Attack, Fire, Flee, Patrol, ReturnHome, ChooseTarget, Dead};
 
     //The current state
     public AIState currentState;
@@ -27,7 +27,7 @@ public class AIController : Controller
     public float waypointStopDistance;
 
     //Current waypoint
-    private int currentWaypoint = 0;
+    public int currentWaypoint = 0;
 
     //Patrol loop boolean
     public bool isLooping;
@@ -43,7 +43,7 @@ public class AIController : Controller
     public override void Start()
     {
         base.Start();
-        ChangeState(AIState.Guard);
+        ChangeState(AIState.Patrol);
     }
 
     // Update is called once per frame
@@ -66,70 +66,69 @@ public class AIController : Controller
     {
     }
 
-    public void MakeDecisions()
+    public virtual void MakeDecisions()
     {
-        if(pawn != null)
+        if (pawn != null)
         {
-            
 
-                TargetPlayerOne();
 
-                //Debug.Log("Thinking...");
-                switch (currentState)
-                {
-                    case AIState.Guard:
+            TargetPlayerOne();
+
+            //Debug.Log("Thinking...");
+            switch (currentState)
+            {
+                case AIState.Guard:
+                    DoIdleState();
+                    currentWaypoint = 0;
+
+                    if (IsDistanceLessThan(target, 15) && target != null)
+                    {
+                        ChangeState(AIState.Chase);
+                    }
+                    else if (target == null)
+                    {
                         DoIdleState();
-                        currentWaypoint = 0;
+                    }
+                    break;
+                case AIState.Patrol:
+                    //Does work
+                    Patrol();
+                    //Transition check
+                    if (IsDistanceLessThan(target, 15))
+                    {
+                        ChangeState(AIState.Chase);
+                    }
+                    break;
 
-                        if (IsDistanceLessThan(target, 15) && target != null)
-                        {
-                            ChangeState(AIState.Chase);
-                        }
-                        else if (target == null)
-                        {
-                            DoIdleState();
-                        }
-                        break;
-                    case AIState.Patrol:
-                        //Does work
-                        Patrol();
-                        //Transition check
-                        if (IsDistanceLessThan(target, 15))
-                        {
-                            ChangeState(AIState.Chase);
-                        }
-                        break;
+                case AIState.Chase:
+                    //Does work
+                    DoChaseState();
+                    //Transition check
+                    if (IsDistanceLessThan(target, 12))
+                    {
+                        ChangeState(AIState.Attack);
+                    }
+                    else if (!IsDistanceLessThan(target, 15))
+                    {
+                        ChangeState(AIState.Patrol);
+                    }
+                    break;
 
-                    case AIState.Chase:
-                        //Does work
-                        DoChaseState();
-                        //Transition check
-                        if (IsDistanceLessThan(target, 12))
-                        {
-                            ChangeState(AIState.Attack);
-                        }
-                        else if (!IsDistanceLessThan(target, 15))
-                        {
-                            ChangeState(AIState.Patrol);
-                        }
-                        break;
+                case AIState.Attack:
 
-                    case AIState.Attack:
+                    DoAttackState();
 
-                        DoAttackState();
+                    if (!IsDistanceLessThan(target, 12) && pawn != null)
+                    {
+                        ChangeState(AIState.Chase);
+                    }
+                    break;
+                case AIState.Dead:
 
-                        if (!IsDistanceLessThan(target, 12) && pawn != null)
-                        {
-                            ChangeState(AIState.Chase);
-                        }
-                        break;
-                    case AIState.Dead:
+                    break;
 
-                        break;
-
-                }
+            }
         }
-        
     }
 
     public virtual void ChangeState(AIState newState)
@@ -203,33 +202,30 @@ public class AIController : Controller
         
     }
 
-    protected void Flee()
+    public void Flee(GameObject target)
     {
-        //Finds the distance between this and the player
-        float targetDistance = Vector3.Distance(target.transform.position, pawn.transform.position);
+        Flee(target.transform.position);
+    }
 
-        //This determines the distance in percentages
-        float percentOfFleeDistance = targetDistance / fleeDistance;
+    public void Flee(Vector3 targetPosition)
+    {
+        //This rotates toward the function
+        pawn.RotateTowards(targetPosition);
 
-        //This clamps the percentage between 0% and 100%
-        percentOfFleeDistance = Mathf.Clamp01(percentOfFleeDistance);
+        //This moves forward
+        pawn.MoveBackward();
+    }
 
-        //This flips the previous value
-        float flippedPercentOfFleeDistance = 1 - percentOfFleeDistance;
+    public void Flee(Transform targetTransform)
+    {
+        //This seeks the position of our targetTransform
+        Seek(targetTransform.position);
+    }
 
-        //At the moment, I unsure over how to implement this
 
-        //This finds the vector to the target
-        Vector3 vectorToTarget = target.transform.position - pawn.transform.position;
-
-        //This finds the vector AWAY from the target by multiplying by -1 (it flips the above vector basically)
-        Vector3 vectorAwayFromTarget = -vectorToTarget;
-
-        //This finds the vector we would travel down in order to flee
-        Vector3 fleeVector = vectorAwayFromTarget.normalized * fleeDistance;
-
-        //This seeks the point that is "fleeVector" away from our current position
-        Seek(pawn.transform.position + fleeVector);
+    public void DoFleeState()
+    {
+        Flee(target);
     }
 
     protected bool IsDistanceLessThan(GameObject target, float distance)
@@ -281,7 +277,7 @@ public class AIController : Controller
 
     }
 
-    public void TargetPlayerOne()
+    protected void TargetPlayerOne()
     {
         //This checks if the gamemanager exists
         if (GameManager.instance.players != null)
