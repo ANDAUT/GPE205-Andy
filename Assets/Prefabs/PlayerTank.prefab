@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4672618276911857805}
   - component: {fileID: 6933205194440029938}
   - component: {fileID: 174052365709484892}
+  - component: {fileID: 2896009223490701556}
   m_Layer: 0
   m_Name: HealthCircle
   m_TagString: Untagged
@@ -76,6 +77,19 @@ MonoBehaviour:
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2896009223490701556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504293233086869536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4244e291e36017044bdd12b4cf78d195, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthCircle: {fileID: 174052365709484892}
 --- !u!1 &3400884655007546733
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,6 +609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c81ebb8b1903894ca8ea78359b0b08a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthBar: {fileID: 2896009223490701556}
   currentHealth: 100
   maxHealth: 100
   bounty: 0

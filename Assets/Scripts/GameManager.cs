@@ -29,7 +29,8 @@ public class GameManager : MonoBehaviour
         }
 
         //Temporary until new knowledge acquired
-        SpawnPlayer();
+        //SpawnPlayer();
+        //mapGen.GenerateMap();
     }
 
     // Awake means the code will run even before any other codes begin firing their Start() functions
@@ -78,6 +79,11 @@ public class GameManager : MonoBehaviour
             newPawn.controller = newController;
         }
         
+    }
+
+    public void SpawnRandomPlatform()
+    {
+        //to be filled...
     }
 
     private void DeactivateAllStates()

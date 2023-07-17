@@ -27,23 +27,6 @@ public class MapGenerator : MonoBehaviour
 
     private void Awake()
     {
-
-        //oh god this is deprecated
-        if (mapType == GeneratorType.MapOfTheDay)
-        {
-            currentSeed = DateToInt(DateTime.Now.Date);
-            UnityEngine.Random.InitState(currentSeed);
-
-        } else if (mapType == GeneratorType.SetSeed)
-        {
-            currentSeed = MapSeed.GetHashCode();
-            UnityEngine.Random.InitState(currentSeed);
-
-        } else if (mapType == GeneratorType.RandomSeed)
-        {
-            currentSeed = UnityEngine.Random.Range(0, 10000000);
-            UnityEngine.Random.InitState(currentSeed);
-        }
         
     }
 
@@ -90,8 +73,33 @@ public class MapGenerator : MonoBehaviour
         return gridPrefabs[UnityEngine.Random.Range(0, gridPrefabs.Length)];
     }
 
+    public virtual void ChangeMapType(GeneratorType newType)
+    {
+        //Changes the current state
+        mapType = newType;
+    }
+
     public void GenerateMap()
     {
+
+        //oh god this is deprecated
+        if (mapType == GeneratorType.MapOfTheDay)
+        {
+            currentSeed = DateToInt(DateTime.Now.Date);
+            UnityEngine.Random.InitState(currentSeed);
+
+        }
+        else if (mapType == GeneratorType.SetSeed)
+        {
+            currentSeed = MapSeed.GetHashCode();
+            UnityEngine.Random.InitState(currentSeed);
+
+        }
+        else if (mapType == GeneratorType.RandomSeed)
+        {
+            currentSeed = UnityEngine.Random.Range(0, 10000000);
+            UnityEngine.Random.InitState(currentSeed);
+        }
 
         //This clears out the grid - column being x, and row being y
         grid = new Room[cols, rows];

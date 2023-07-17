@@ -5,9 +5,21 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
 
+    [SerializeField] HealthBarScript healthBar;
+    Rigidbody2D rb;
+
     public float currentHealth;
     public float maxHealth;
     public float bounty;
+
+    private void Awake()
+    {
+        if(healthBar != null)
+        {
+            rb = GetComponent<Rigidbody2D>();
+            healthBar = GetComponentInChildren<HealthBarScript>();
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +50,11 @@ public class Health : MonoBehaviour
 
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
+        if (healthBar != null)
+        {
+            healthBar.UpdateHealthCircle(currentHealth, maxHealth);
+        }
+
         if (currentHealth <= 0)
         {
             Die(attacker);
@@ -56,5 +73,10 @@ public class Health : MonoBehaviour
         Debug.Log("Healer: " + healer.name + " Amount Healed: " + amount + " Target: " + gameObject.name);
 
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        if(healthBar != null)
+        {
+            healthBar.UpdateHealthCircle(currentHealth, maxHealth);
+        }
     }
 }
